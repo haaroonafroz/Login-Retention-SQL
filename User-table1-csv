@@ -1,3 +1,11 @@
+##SCHEMA:
+    Table Name: User1
+    user_id: Unique Id of a user.
+    country: The country where the users installed the app.
+    Platform: Mobile platform the users use to operate the app. 
+    user_first_seen_date: Date of installing the app.
+##copy the following comma separated values to a natepad to create a .csv file
+
 user_id,country,PLATFORM,user_first_seen_date
 EE2247F4-0CEB-4219-80EF-EB33E87BA45B,MA,IOS,14/08/22
 3E1067B7-F651-4C20-82FB-4535220680F2,VN,IOS,24/08/22
