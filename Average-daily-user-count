@@ -1,0 +1,18 @@
+This SQL query determines the count of distinct users who login into the app daily:
+  WITH
+    day_count AS
+      (
+        SELECT
+          user_id,
+          count(Date) as num_days, 
+        FROM
+          mystical-mote-359010.statfinity_sql_case.user_2
+        WHERE
+          sessionID is not null
+        GROUP BY
+          user_id, Date
+      )
+  SELECT
+    avg(num_days) as average_days_per_user
+  FROM
+    day_count
