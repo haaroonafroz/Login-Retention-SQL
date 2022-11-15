@@ -1,0 +1,113 @@
+##The following SQl queries determine the percentage of user login retention for Day1, Day3 and Day7 of the original app installation date.
+##Retention is defined as the action when a user comes back to the platform, where Day 0 is the install date and subsequently, Day 1 is the date after the install date, and so on. 
+##For Eg. if the users install the app on 1st July, then Day 1 will be 2nd July, and Day 30 will be 31st July.
+
+
+Query 1- Retention percentage of Day1
+
+          WITH
+          temp_table as
+            (
+            SELECT
+              user_1.user_id as user_id,
+              user_1.user_first_seen_date as Day0,
+              user_2.Date as Day1
+            FROM
+              mystical-mote-359010.statfinity_sql_case.user_1 as user_1
+              JOIN
+              mystical-mote-359010.statfinity_sql_case.user_2 as user_2
+              ON
+                user_1.user_id = user_2.user_id
+              AND
+                user_2.Date = user_1.user_first_seen_date +1
+              AND
+                user_2.sessionID is not NULL
+            ),
+          user_table as
+            (
+              SELECT
+                user_id
+              FROM
+                mystical-mote-359010.statfinity_sql_case.user_1
+            )
+        SELECT
+          count(distinct(temp_table.user_id))*100/ count(distinct(user_table.user_id)) as retention_percent_day1
+        FROM
+          temp_table FULL JOIN user_table
+          ON
+          temp_table.user_id = user_table.user_id
+
+
+
+
+
+Query 2- Retention percentage of Day3
+
+          WITH
+            temp_table as
+              (
+              SELECT
+                user_1.user_id as user_id,
+                user_1.user_first_seen_date as Day0,
+                user_2.Date as Day3
+              FROM
+                mystical-mote-359010.statfinity_sql_case.user_1 as user_1
+                JOIN
+                mystical-mote-359010.statfinity_sql_case.user_2 as user_2
+                ON
+                  user_1.user_id = user_2.user_id
+                AND
+                  user_2.Date = user_1.user_first_seen_date +3
+                AND
+                  user_2.sessionID is not NULL
+              ),
+            user_table as
+              (
+                SELECT
+                  user_id
+                FROM
+                  mystical-mote-359010.statfinity_sql_case.user_1
+              )
+          SELECT
+            count(distinct(temp_table.user_id))*100/ count(distinct(user_table.user_id)) as retention_percent_day3
+          FROM
+            temp_table FULL JOIN user_table
+            ON
+            temp_table.user_id = user_table.user_id
+ 
+ 
+ 
+ 
+ 
+ Query 3- Retention percentage of Day7
+          WITH
+            temp_table as
+              (
+              SELECT
+                user_1.user_id as user_id,
+                user_1.user_first_seen_date as Day0,
+                user_2.Date as Day7
+              FROM
+                mystical-mote-359010.statfinity_sql_case.user_1 as user_1
+                JOIN
+                mystical-mote-359010.statfinity_sql_case.user_2 as user_2
+                ON
+                  user_1.user_id = user_2.user_id
+                AND
+                  user_2.Date = user_1.user_first_seen_date +7
+                AND
+                  user_2.sessionID is not NULL
+              ),
+            user_table as
+              (
+                SELECT
+                  user_id
+                FROM
+                  mystical-mote-359010.statfinity_sql_case.user_1
+              )
+          SELECT
+            count(distinct(temp_table.user_id))*100/ count(distinct(user_table.user_id)) as retention_percent_day7
+          FROM
+            temp_table FULL JOIN user_table
+            ON
+            temp_table.user_id = user_table.user_id
